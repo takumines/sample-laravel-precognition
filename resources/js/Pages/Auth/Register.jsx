@@ -1,34 +1,31 @@
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const [params, setParams] = useState({
         name: '',
         email: '',
         password: '',
-        password_confirmation: '',
-    });
+        password_confirmation: ''
+    })
 
-    useEffect(() => {
-        return () => {
-            reset('password', 'password_confirmation');
-        };
-    }, []);
+    const [precognitionKey, setPrecognitionKey] = useState('')
 
-    const onHandleChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
-    };
+    const handleChange = e => {
+        const key = e.target.name
+        const value = e.target.value
 
-    const submit = (e) => {
-        e.preventDefault();
+        setPrecognitionKey(key)
 
-        post(route('register'));
-    };
+        setParams({
+            ...params,
+        })
+    }
+
 
     return (
         <GuestLayout>
@@ -41,11 +38,11 @@ export default function Register() {
                     <TextInput
                         id="name"
                         name="name"
-                        value={data.name}
+                        value={params.name}
                         className="mt-1 block w-full"
                         autoComplete="name"
                         isFocused={true}
-                        handleChange={onHandleChange}
+                        handleChange={handleChange}
                         required
                     />
 
@@ -59,10 +56,10 @@ export default function Register() {
                         id="email"
                         type="email"
                         name="email"
-                        value={data.email}
+                        value={params.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
-                        handleChange={onHandleChange}
+                        handleChange={handleChange}
                         required
                     />
 
@@ -76,10 +73,10 @@ export default function Register() {
                         id="password"
                         type="password"
                         name="password"
-                        value={data.password}
+                        value={params.password}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        handleChange={onHandleChange}
+                        handleChange={handleChange}
                         required
                     />
 
@@ -93,9 +90,9 @@ export default function Register() {
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"
-                        value={data.password_confirmation}
+                        value={params.password_confirmation}
                         className="mt-1 block w-full"
-                        handleChange={onHandleChange}
+                        handleChange={handleChange}
                         required
                     />
 
